@@ -16,8 +16,8 @@ describe('NCT token contract', () => {
 
     });
 
-    describe('Deployement', () => {
-        it('Setup', async () => {
+    describe('deployement', () => {
+        it('setup', async () => {
             NCT = await ethers.getContractFactory("NCT");
             nct = await NCT.deploy("100000");
 
@@ -25,7 +25,7 @@ describe('NCT token contract', () => {
             // console.debug("NCT address: " + await nct.address);
         });
 
-        it('Should assign all the supply to the owner', async () => {
+        it('should assign all the supply to the owner', async () => {
            expect(await nct.totalSupply()).to.equal(await nct.balanceOf(owner.address));
             // console.debug("owner: " + await nct.balanceOf(owner.address));
             // console.debug("addr1: " + await nct.balanceOf(addr1.address));
@@ -33,7 +33,7 @@ describe('NCT token contract', () => {
         });
     });
 
-    describe('Transactions', () => {
+    describe('transactions', () => {
         it('transfer tokens between addresses', async () => {
             await nct.transfer(addr1.address, 50);
             expect(await nct.balanceOf(addr1.address)).to.equal(50);
@@ -47,10 +47,9 @@ describe('NCT token contract', () => {
         it('transfer fail testing', async () => {
             // console.info("addr1: " + await nct.balanceOf(addr1.address));
             // console.info("addr2: " + await nct.balanceOf(addr2.address));
+
             await expect(
-                nct
-                    .connect(addr1)
-                    .transfer(owner.address, 1)
+                nct.connect(addr1).transfer(owner.address, 1)
             ).to.be.revertedWith("ERC20: transfer amount exceeds balance");
         });
 

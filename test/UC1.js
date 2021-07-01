@@ -15,8 +15,8 @@ describe('UC1: NFT with embedded NCT functionality', () => {
 
     });
 
-    describe('Deployement', () => {
-        it('Setup', async () => {
+    describe('deployement', () => {
+        it('setup', async () => {
             NCT = await ethers.getContractFactory("NCT");
             nct = await NCT.deploy("100000");
 
@@ -27,19 +27,18 @@ describe('UC1: NFT with embedded NCT functionality', () => {
             // console.debug("NCT address: " + await nct.address);
         });
 
-        it('Should assign all the NCT supply to the owner', async () => {
+        it('should assign all the NCT supply to the owner', async () => {
             expect(await nct.totalSupply()).to.equal(await nct.balanceOf(owner.address));
             // console.debug("owner: " + await nct.balanceOf(owner.address));
             // console.debug("addr1: " + await nct.balanceOf(addr1.address));
-
         });
 
-        it('Transfer some NCT to others wallet', async () => {
+        it('transfer some NCT to others wallet', async () => {
             numTokens = Math.floor((await nct.totalSupply()) / 3);
 
             await nct.connect(owner).transfer(addr1.address, numTokens);
             await nct.connect(owner).transfer(addr2.address, numTokens);
-
+            
             // console.debug("owner: " + await nct.balanceOf(owner.address));
             // console.debug("addr1: " + await nct.balanceOf(addr1.address));
             // console.debug("addr2: " + await nct.balanceOf(addr2.address));
@@ -50,7 +49,7 @@ describe('UC1: NFT with embedded NCT functionality', () => {
     });
 
 
-    describe('Minting', () => {
+    describe('minting', () => {
         it('mint 1 token for each address', async () => {
             await nft.connect(owner).mintNFT(1, { value: ethers.utils.parseEther("0.1") });
             await nft.connect(addr1).mintNFT(1, { value: ethers.utils.parseEther("0.1") });
@@ -75,18 +74,13 @@ describe('UC1: NFT with embedded NCT functionality', () => {
         });
     });
 
-    describe('Changing name', () => {
+    describe('changing name', () => {
         it('owner change name of a NFT token', async () => {
-            console.log("NCT address: " + nct.address)
-            console.log("OWN address: " + owner.address)
-            console.log("NCT balance: " + await nct.connect(owner).balanceOf(owner.address))
-            //await nct.connect(owner).burn(10);
+            // console.log("NCT address: " + nct.address)
+            // console.log("OWN address: " + owner.address)
+            // console.log("NCT balance: " + await nct.connect(owner).balanceOf(owner.address))
 
-            //FIXME still have 'ERC20: transfer amount exceeds allowance' error afetr calling changeName()
-            // that contains the transferFrom
-            await nct.connect(owner).approve(nct.address, 10);
-            //await nct.connect(owner).increaseAllowance(nct.address, 1000);
-
+            await nct.connect(owner).approve(nft.address, 10);
             await nft.connect(owner).changeName("1", "hello world");
 
         });
@@ -96,6 +90,16 @@ describe('UC1: NFT with embedded NCT functionality', () => {
             await expect(
                 nft.connect(addr1).changeName("1", "hello world")
             ).to.be.revertedWith("ERC721: caller is not the owner");
+
+        });
+
+        it('no duplicated names', async () => {
+
+            await nct.connect(addr1).approve(nft.address, 10);
+
+            await expect(
+                nft.connect(addr1).changeName("2", "hello world")
+            ).to.be.revertedWith("Name already reserved");
 
         });
 

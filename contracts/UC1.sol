@@ -8,8 +8,6 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./INCT.sol";
 
-import "hardhat/console.sol";
-
 /**
  * @title UC1
  * @dev This is the simplest and most elegant use case: an NFT that contains name management within its main contract.
@@ -75,11 +73,7 @@ contract UC1 is ERC721, Ownable {
         require(sha256(bytes(newName)) != sha256(bytes(_tokenName[tokenId])), "New name is same as the current one");
         require(isNameReserved(newName) == false, "Name already reserved");
 
-        console.log("-- _nctAddress is ", _nctAddress);
-        console.log("-- caller is ", msg.sender);
-        console.log("-- balance is ", INCT(_nctAddress).balanceOf(msg.sender));
-
-        INCT(_nctAddress).transferFrom(msg.sender, address (this), NAME_CHANGE_PRICE);
+        INCT(_nctAddress).transferFrom(msg.sender, address(this), NAME_CHANGE_PRICE);
 
         // If already named, dereserve old name
         if (bytes(_tokenName[tokenId]).length > 0) {
@@ -132,13 +126,12 @@ contract UC1 is ERC721, Ownable {
 
             if (char == 0x20 && lastChar == 0x20) return false; // Cannot contain continous spaces
 
-            if(
-                !(char >= 0x30 && char <= 0x39) && //9-0
-            !(char >= 0x41 && char <= 0x5A) && //A-Z
-            !(char >= 0x61 && char <= 0x7A) && //a-z
-            !(char == 0x20) //space
-            )
-                return false;
+            if(!(char >= 0x30 && char <= 0x39) && //9-0
+               !(char >= 0x41 && char <= 0x5A) && //A-Z
+               !(char >= 0x61 && char <= 0x7A) && //a-z
+               !(char == 0x20) //space
+            ) return false;
+
 
             lastChar = char;
         }
