@@ -76,21 +76,26 @@ describe('UC1: NFT with embedded NCT functionality', () => {
     });
 
     describe('Changing name', () => {
-        it('owner change name of a NFT', async () => {
+        it('owner change name of a NFT token', async () => {
             console.log("NCT address: " + nct.address)
             console.log("OWN address: " + owner.address)
             console.log("NCT balance: " + await nct.connect(owner).balanceOf(owner.address))
-            // await nct.connect(owner).burn(10);
+            //await nct.connect(owner).burn(10);
+
+            //FIXME still have 'ERC20: transfer amount exceeds allowance' error afetr calling changeName()
+            // that contains the transferFrom
+            await nct.connect(owner).approve(nct.address, 10);
+            //await nct.connect(owner).increaseAllowance(nct.address, 1000);
+
             await nft.connect(owner).changeName("1", "hello world");
 
         });
 
-        it('not owner change name of a NFT', async () => {
-            // console.log("NCT address: " + nct.address)
-            // console.log("OWN address: " + owner.address)
-            // console.log("NCT balance: " + await nct.connect(owner).balanceOf(owner.address))
-            //await nct.connect(owner).burn(10);
-            await nft.connect(addr1).changeName("1", "hello world"); // TODO: handle with revertedWith
+        it('only the owner can change name of a NFT token', async () => {
+
+            await expect(
+                nft.connect(addr1).changeName("1", "hello world")
+            ).to.be.revertedWith("ERC721: caller is not the owner");
 
         });
 
