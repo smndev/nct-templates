@@ -2,18 +2,19 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+//import "./INCT.sol";
 
 /**
  * @title NCT
  * @dev Very simple ERC20 Token example, where all tokens are pre-assigned to the creator.
  * The purpose of this contract is to very simply simulate real NCTs for testing purposes only.
- * The basic functions in fact remain the same for the two contracts.
+ * The basic functions available in NCT are the same.
  *
  * Authors: s.imo
  * Created: 01.07.2021
  */
-contract NCT is ERC20 {
+contract NCT is ERC20Burnable {
 
     /**
      * @dev Constructor that gives msg.sender all of existing tokens.
