@@ -40,7 +40,7 @@ contract UC1 is ERC721, Ownable {
     event NameChange (uint256 indexed maskIndex, string newName);
 
 
-    constructor(address nctAddress) ERC721("Your NFT Name", "XYZ") {
+    constructor(address nctAddress) ERC721("Your NFT with names", "XYZ") {
         _nctAddress = nctAddress;
     }
 

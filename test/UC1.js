@@ -38,7 +38,7 @@ describe('UC1: NFT with embedded NCT functionality', () => {
 
             await nct.connect(owner).transfer(addr1.address, numTokens);
             await nct.connect(owner).transfer(addr2.address, numTokens);
-            
+
             // console.debug("owner: " + await nct.balanceOf(owner.address));
             // console.debug("addr1: " + await nct.balanceOf(addr1.address));
             // console.debug("addr2: " + await nct.balanceOf(addr2.address));
