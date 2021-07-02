@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./INCT.sol";
+import "./IMinimalNCT.sol";
 
 /**
  * @title UC1
@@ -20,10 +20,14 @@ contract UC1 is ERC721, Ownable {
     using Counters for Counters.Counter;
     using SafeMath for uint256;
 
+    // The maximum number of tokens, this is just an example
     uint256 public constant MAX_NFT_SUPPLY    = 16384;
+    // The name change price, you can set your own
     uint256 public constant NAME_CHANGE_PRICE = 10;
+    // The NFT minting price, this is just an example
     uint256 public constant NFT_MINT_PRICE    = 100000000000000000; // 0.1 ETH
 
+    // counter of minted tokens
     Counters.Counter private _tokenIds;
 
     // Mapping from token ID to name
@@ -32,16 +36,22 @@ contract UC1 is ERC721, Ownable {
     // Mapping if certain name string has already been reserved
     mapping (string => bool) private _nameReserved;
 
-    // Name change token address
-    address private _nctAddress;
+    // the NCT contract pointer
+    INCT private _nct;
 
 
     // Events
     event NameChange (uint256 indexed maskIndex, string newName);
 
 
+    /**
+     * @dev Constructor that stores the NCT pointer
+     * The parameters are:
+     * nctAddress - address of the NCT contract
+     */
     constructor(address nctAddress) ERC721("Your NFT with names", "XYZ") {
-        _nctAddress = nctAddress;
+        //NOTE: here you can check if the required functions are implemented by IERC165
+        _nct = INCT(nctAddress);
     }
 
     function totalSupply() public view returns (uint256) {
@@ -73,7 +83,7 @@ contract UC1 is ERC721, Ownable {
         require(sha256(bytes(newName)) != sha256(bytes(_tokenName[tokenId])), "New name is same as the current one");
         require(isNameReserved(newName) == false, "Name already reserved");
 
-        INCT(_nctAddress).transferFrom(msg.sender, address(this), NAME_CHANGE_PRICE);
+        _nct.transferFrom(msg.sender, address(this), NAME_CHANGE_PRICE);
 
         // If already named, dereserve old name
         if (bytes(_tokenName[tokenId]).length > 0) {
@@ -81,11 +91,14 @@ contract UC1 is ERC721, Ownable {
         }
         toggleReserveName(newName, true);
         _tokenName[tokenId] = newName;
-        INCT(_nctAddress).burn(NAME_CHANGE_PRICE);
+        _nct.burn(NAME_CHANGE_PRICE);
         emit NameChange(tokenId, newName);
     }
 
 
+    /**
+     * @dev Mint 'numberOfNfts' new tokens
+     */
     function mintNFT(uint256 numberOfNfts) public payable {
         require(totalSupply() <  MAX_NFT_SUPPLY, "Sale has already ended");
         require(numberOfNfts  >  0, "numberOfNfts cannot be 0");

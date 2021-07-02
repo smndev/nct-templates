@@ -3,11 +3,10 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
-//import "./INCT.sol";
 
 /**
  * @title NCT
- * @dev Very simple ERC20 Token example, where all tokens are pre-assigned to the creator.
+ * @dev A minimal NCT implementation (for test only!) where all tokens are pre-assigned to the creator.
  * The purpose of this contract is to very simply simulate real NCTs for testing purposes only.
  * The basic functions available in NCT are the same.
  *

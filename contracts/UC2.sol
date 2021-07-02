@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./INCT.sol";
+import "./IMinimalNCT.sol";
 
 /**
  * @title UC2
@@ -18,7 +18,9 @@ import "./INCT.sol";
  */
 contract UC2 is Ownable {
 
+    // The name change price, you can set your own
     uint256 public constant NAME_CHANGE_PRICE = 10;
+    // The NFT minting price, this is just an example
     uint256 public constant NFT_MINT_PRICE    = 100000000000000000; // 0.1 ETH
 
     // Mapping from token ID to name
@@ -27,19 +29,25 @@ contract UC2 is Ownable {
     // Mapping if certain name string has already been reserved
     mapping (string => bool) private _nameReserved;
 
-    // Name change token address
-    address private _nctAddress;
-
-    // NFT address
-    address private _nftAddress;
+    // your NFT contract pointer
+    IERC721 private _nft;
+    // the NCT contract pointer
+    INCT    private _nct;
 
     // Events
     event NameChange (uint256 indexed maskIndex, string newName);
 
 
+    /**
+     * @dev Constructor that stores the NFT and NCT pointer
+     * The parameters are:
+     * nftAddress - address of your NFT contract
+     * nctAddress - address of the NCT contract
+     */
     constructor(address nftAddress, address nctAddress) {
-        _nftAddress = nftAddress;
-        _nctAddress = nctAddress;
+        //NOTE: here you can check if the required functions are implemented by IERC165
+        _nft = IERC721(nftAddress);
+        _nct = INCT(nctAddress);
     }
 
     /**
@@ -61,14 +69,14 @@ contract UC2 is Ownable {
      */
     function changeName(uint256 tokenId, string memory newName) public {
         // NOTE: the ownership shall be enforced in this name database contract
-        address owner = IERC721(_nftAddress).ownerOf(tokenId);
+        address owner = _nft.ownerOf(tokenId);
 
         require(_msgSender() == owner, "Caller is not the owner");
         require(validateName(newName) == true, "Not a valid new name");
         require(sha256(bytes(newName)) != sha256(bytes(_tokenName[tokenId])), "New name is same as the current one");
         require(isNameReserved(newName) == false, "Name already reserved");
 
-        INCT(_nctAddress).transferFrom(msg.sender, address(this), NAME_CHANGE_PRICE);
+        _nct.transferFrom(msg.sender, address(this), NAME_CHANGE_PRICE);
 
         // If already named, dereserve old name
         if (bytes(_tokenName[tokenId]).length > 0) {
@@ -76,7 +84,7 @@ contract UC2 is Ownable {
         }
         toggleReserveName(newName, true);
         _tokenName[tokenId] = newName;
-        INCT(_nctAddress).burn(NAME_CHANGE_PRICE);
+        _nct.burn(NAME_CHANGE_PRICE);
         emit NameChange(tokenId, newName);
     }
 

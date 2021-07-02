@@ -18,17 +18,29 @@ contract NFT is ERC721, Ownable {
     using Counters for Counters.Counter;
     using SafeMath for uint256;
 
+    // The maximum number of tokens, this is just an example
     uint256 public constant MAX_NFT_SUPPLY = 16384;
+    // The NFT minting price, this is just an example
     uint256 public constant NFT_MINT_PRICE = 100000000000000000; // 0.1 ETH
 
+    // counter of minted tokens
     Counters.Counter private _tokenIds;
 
+    /**
+     * @dev Constructor
+     */
     constructor() ERC721("Your NFT without names", "XYZ") {}
 
+    /**
+     * @dev Retrieve the total supply
+     */
     function totalSupply() public view returns (uint256) {
         return _tokenIds.current();
     }
 
+    /**
+     * @dev Mint 'numberOfNfts' new tokens
+     */
     function mintNFT(uint256 numberOfNfts) public payable {
         require(totalSupply() <  MAX_NFT_SUPPLY, "Sale has already ended");
         require(numberOfNfts  >  0, "numberOfNfts cannot be 0");

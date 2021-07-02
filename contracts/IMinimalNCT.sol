@@ -1,3 +1,4 @@
+// contracts/IMinimalNCT.sol
 // SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.0;
@@ -5,8 +6,8 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 /**
- * @title INCT
- * @dev INCT interface, it extends the IERC20 with a burn function
+ * @title IMinimalNCT
+ * @dev NCT minimal interface, it extends the IERC20 with a burn function
  *
  * Authors: s.imo
  * Created: 01.07.2021
