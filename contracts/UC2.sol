@@ -1,4 +1,4 @@
-// contracts/UC1.sol
+// contracts/UC2.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
@@ -9,12 +9,12 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./INCT.sol";
 
 /**
- * @title UC1
- * @dev This is the simplest and most elegant use case: an NFT that contains name management within its main contract.
- * Similar to Hashmasks, NCTs are burned when a name is changed.
+ * @title UC2
+ * @dev In this implementation, the contract defining NFTs has already been implemented.
+ * This contract then defines an external database that contains the names of the various tokens.
  *
  * Authors: s.imo
- * Created: 01.07.2021
+ * Created: 02.07.2021
  */
 contract UC2 is Ownable {
 
