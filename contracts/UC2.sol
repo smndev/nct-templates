@@ -20,8 +20,6 @@ contract UC2 is Ownable {
 
     // The name change price, you can set your own
     uint256 public constant NAME_CHANGE_PRICE = 10;
-    // The NFT minting price, this is just an example
-    uint256 public constant NFT_MINT_PRICE    = 100000000000000000; // 0.1 ETH
 
     // Mapping from token ID to name
     mapping (uint256 => string) private _tokenName;
