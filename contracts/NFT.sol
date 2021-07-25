@@ -45,7 +45,7 @@ contract NFT is ERC721, Ownable {
         require(totalSupply() <  MAX_NFT_SUPPLY, "Sale has already ended");
         require(numberOfNfts  >  0, "numberOfNfts cannot be 0");
         require(numberOfNfts  <= 20, "You may not buy more than 20 NFTs at once");
-        require(totalSupply().add(numberOfNfts) < MAX_NFT_SUPPLY, "Sale has already ended");
+        require(totalSupply().add(numberOfNfts)  <= MAX_NFT_SUPPLY, "Sale has already ended");
         require(NFT_MINT_PRICE.mul(numberOfNfts) == msg.value, "Ether value sent is not correct");
 
         for (uint i = 0; i < numberOfNfts; i++) {

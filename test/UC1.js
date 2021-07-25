@@ -9,7 +9,7 @@ const { ethers } = require("hardhat");
  * Created: 01.07.2021
  */
 describe('UC1: NFT with embedded NCT functionality', () => {
-    let NCT, nct, NFT, nft, owner, addr1, addr2;
+    let NCT, nct, NFT, nft, owner, addr1, addr2, addr3;
 
     beforeEach(async () => {
 
@@ -23,7 +23,7 @@ describe('UC1: NFT with embedded NCT functionality', () => {
             NFT = await ethers.getContractFactory("UC1");
             nft = await NFT.deploy(nct.address);
 
-            [owner, addr1, addr2] = await ethers.getSigners();
+            [owner, addr1, addr2, addr3] = await ethers.getSigners();
             // console.debug("NCT address: " + await nct.address);
         });
 
@@ -68,10 +68,29 @@ describe('UC1: NFT with embedded NCT functionality', () => {
         it('mint 10 token for addr1', async () => {
             await nft.connect(addr1).mintNFT(10, { value: ethers.utils.parseEther("1") });
 
+            k = await nft.totalSupply();
             for (i = 0; i < 10; i++) {
-                expect(await nft.ownerOf(3 + i + 1)).to.equal(addr1.address);
+                expect(await nft.ownerOf(k - i)).to.equal(addr1.address);
             }
         });
+
+        it('mint all remaining tokens', async () => {
+            minters = [addr1, addr2, addr3];
+            maxNfts = await nft.MAX_NFT_SUPPLY();
+
+            for(j = 0;; j++){
+                numNfts = await nft.totalSupply();
+
+                k = Math.min(20, maxNfts - numNfts);
+                if(k <= 0) break;
+
+                price = k * 0.1;
+                await nft.connect(minters[j % 3]).mintNFT(k, {value: ethers.utils.parseEther(price.toString())});
+            }
+
+            expect(await nft.totalSupply()).to.equal(maxNfts);
+
+        }).timeout(40000); // NOTE: we are minting all the tokens, can be time consuming
     });
 
     describe('changing name', () => {
