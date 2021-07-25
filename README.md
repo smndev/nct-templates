@@ -89,7 +89,7 @@ This price can be changed to suit the project’s needs.
 
 It is important to note that for the operation to be successful, the owner of the token must:
 - have enough NCTs in his wallet.
-- call the ``approve()`` function on the NCT contract before calling ``changeName()`` function (e.g., see [UC1.js, line 102](./test/UC1.js#L102)).
+- call the ``approve()`` function on the NCT contract before calling ``changeName()`` function (e.g., see [UC1.js, line 105](./test/UC2.js#L105)).
 
 
 
