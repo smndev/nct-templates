@@ -99,7 +99,7 @@ describe('UC1: NFT with embedded NCT functionality', () => {
             // console.log("OWN address: " + owner.address)
             // console.log("NCT balance: " + await nct.connect(owner).balanceOf(owner.address))
 
-            await nct.connect(owner).approve(nft.address, ethers.utils.parseUnits("10", "18"));
+            await nct.connect(owner).increaseAllowance(nft.address, ethers.utils.parseUnits("10", "18"));
             await nft.connect(owner).changeName("1", "hello world");
 
         });
@@ -114,7 +114,7 @@ describe('UC1: NFT with embedded NCT functionality', () => {
 
         it('no duplicated names', async () => {
 
-            await nct.connect(addr1).approve(nft.address, ethers.utils.parseUnits("10", "18"));
+            await nct.connect(addr1).increaseAllowance(nft.address, ethers.utils.parseUnits("10", "18"));
 
             await expect(
                 nft.connect(addr1).changeName("2", "hello world")

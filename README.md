@@ -63,7 +63,9 @@ the needs of the project. Please remember that the number of decimal places in t
 
 It is important to note that for the operation to be successful, the owner of the token must:
 - have enough NCTs in his wallet.
-- call the ``approve()`` function on the NCT contract before calling ``changeName()`` function (e.g., see [UC1.js, line 102](./test/UC1.js#L102)).
+- call the ``increaseAllowance()`` function on the NCT contract before calling ``changeName()`` function 
+  (e.g., see [UC1.js, line 102](./test/UC1.js#L102)), where as parameters shall be given the address 
+  of the ``UC1`` contract and the number of NCT tokens to be approved.
 
 ## <a name="s3"></a> 3. Integrating into an existing NFT project
 This section describes how to develop a parallel contract for an  Ethereum Mainnet deployed NFT contract that can be 
@@ -88,7 +90,9 @@ Please remember that the number of decimal places in the NCT contract is 18.
 
 It is important to note that for the operation to be successful, the owner of the token must:
 - have enough NCTs in his wallet.
-- call the ``approve()`` function on the NCT contract before calling ``changeName()`` function (e.g., see [UC2.js, line 105](./test/UC2.js#L105)).
+- call the ``increaseAllowance()`` function on the NCT contract before calling ``changeName()`` function 
+  (e.g., see [UC2.js, line 105](./test/UC2.js#L105)), where as parameters shall be given the address
+  of the ``UC2`` contract and the number of NCT tokens to be approved.
 
 
 

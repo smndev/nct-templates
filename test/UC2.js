@@ -102,7 +102,7 @@ describe('UC2: NFT with an external contract for naming', () => {
             // console.log("OWN address: " + owner.address)
             // console.log("NCT balance: " + await nct.connect(owner).balanceOf(owner.address))
 
-            await nct.connect(owner).approve(db.address, ethers.utils.parseUnits("10.0", "18"));
+            await nct.connect(owner).increaseAllowance(db.address, ethers.utils.parseUnits("10.0", "18"));
             await db.connect(owner).changeName("1", "hello world");
 
         });
@@ -117,7 +117,7 @@ describe('UC2: NFT with an external contract for naming', () => {
 
         it('no duplicated names', async () => {
 
-            await nct.connect(addr1).approve(nft.address, ethers.utils.parseUnits("10", "18"));
+            await nct.connect(addr1).increaseAllowance(nft.address, ethers.utils.parseUnits("10", "18"));
 
             await expect(
                 db.connect(addr1).changeName("2", "hello world")
