@@ -15,6 +15,7 @@ import "./INCT.sol";
  *
  * Authors: s.imo
  * Created: 01.07.2021
+ * Last revision: 26.07.2021: set name change price already ready for a real example
  */
 contract UC1 is ERC721, Ownable {
     using Counters for Counters.Counter;
@@ -23,7 +24,7 @@ contract UC1 is ERC721, Ownable {
     // The maximum number of tokens, this is just an example
     uint256 public constant MAX_NFT_SUPPLY    = 16384;
     // The name change price, you can set your own
-    uint256 public constant NAME_CHANGE_PRICE = 10;
+    uint256 public constant NAME_CHANGE_PRICE = 10 * (10 ** 18);
     // The NFT minting price, this is just an example
     uint256 public constant NFT_MINT_PRICE    = 100000000000000000; // 0.1 ETH
 
