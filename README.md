@@ -14,6 +14,8 @@ The repository is structured as follows:
 - [test](./test): hardhat regression test
 - [scripts](./scripts): hardhat deployment scripts
 
+Building, testing and deployed instructions are available in [BUILDING.md](./BUILDING.md).
+
 
 ## <a name="s1"></a> 1. What is NCT
 The Name Change Token (NCT) is the native token of Hashmasks. The NCT has only one purpose: it allows its holder to 
