@@ -1,10 +1,13 @@
 {
   "name": "nctproject",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.1.0",
+  "description": "How to integrate Name Changing Token (NCT) to a new or existing NFT project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx hardhat test",
+    "compile": "npx hardhat compile",
+    "deploy-rinkeby": "npx hardhat run scripts/deploy-testing.js --network rinkeby",
+    "deploy-mainnet": "DEBUG=false npx hardhat run scripts/deploy-mainnet.js --network mainnet"
   },
   "keywords": [
     "NCT",

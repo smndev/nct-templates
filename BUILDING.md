@@ -22,25 +22,25 @@ and then edit the keys defines is this file as described in the following table.
 ## Compile and Test
 
  ```sh
-npx hardhat compile
-npx hardhat test
+npx run compile
+npx run test
 ```
 
 ## Deploy
 
 On the Rinkebit test net:
  ```sh
-npx hardhat run --network rinkeby ./scripts/deploy-testing.js 
+npx run deploy-rinkeby
 ```
 
 On the Main-Net:
  ```sh
-npx hardhat run --network mainnet ./scripts/deploy-mainnet.js
+npx run deploy-mainnet
 ```
 
 The deployment status is printed in your console as:
  ```sh
-$ npx hardhat run --network rinkeby ./scripts/deploy-testing.js
+$ run deploy-rinkeby
 
 =========================
 TEST DEPLOYMENT COMPLETED

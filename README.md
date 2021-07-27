@@ -11,8 +11,8 @@ NFT project. The document is structured as follows:
 
 The repository is structured as follows:
 - [contracts](./contracts): contracts implementation source code
-- [test](./test): hardhat regression test
-- [scripts](./scripts): hardhat deployment scripts
+- [test](./test): regression test
+- [scripts](./scripts): deployment scripts
 
 Building, testing and deployed instructions are available in [BUILDING.md](./BUILDING.md).
 
