@@ -1,6 +1,6 @@
 {
   "name": "nctproject",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "How to integrate Name Changing Token (NCT) to a new or existing NFT project",
   "main": "index.js",
   "scripts": {

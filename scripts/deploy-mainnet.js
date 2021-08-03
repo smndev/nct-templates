@@ -39,10 +39,10 @@ async function main() {
     console.log("- NFT: ", nft.address);
     console.log("");
     console.log("");
-    console.log("To launch etherscan verification please run:")
-    console.log("npx hardhat verify --network NETWORK ", uc1.address, " ", nctAddress)
-    console.log("npx hardhat verify --network NETWORK ", nft.address)
-    console.log("npx hardhat verify --network NETWORK ", uc2.address, " ", nft.address, " ", nctAddress)
+    console.log("To launch etherscan verification please run:");
+    console.log("npx hardhat verify --network mainnet ", uc1.address, " ", nctAddress);
+    console.log("npx hardhat verify --network mainnet ", nft.address);
+    console.log("npx hardhat verify --network mainnet ", uc2.address, " ", nft.address, " ", nctAddress);
 
 }
 
