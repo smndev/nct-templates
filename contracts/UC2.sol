@@ -15,11 +15,12 @@ import "./INCT.sol";
  *
  * Authors: s.imo
  * Created: 02.07.2021
+ * Last revision: 26.07.2021: set name change price already ready for a real example
  */
 contract UC2 is Ownable {
 
     // The name change price, you can set your own
-    uint256 public constant NAME_CHANGE_PRICE = 10;
+    uint256 public constant NAME_CHANGE_PRICE = 10 * (10 ** 18);
 
     // Mapping from token ID to name
     mapping (uint256 => string) private _tokenName;

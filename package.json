@@ -1,21 +1,31 @@
 {
   "name": "nctproject",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.2.0",
+  "description": "How to integrate Name Changing Token (NCT) to a new or existing NFT project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx hardhat test",
+    "compile": "npx hardhat compile",
+    "deploy-rinkeby": "npx hardhat run scripts/deploy-testing.js --network rinkeby",
+    "deploy-mainnet": "DEBUG=false npx hardhat run scripts/deploy-mainnet.js --network mainnet"
   },
-  "keywords": ["NCT", "HashMasks"],
+  "keywords": [
+    "NCT",
+    "HashMasks"
+  ],
   "author": "maskDAO",
   "license": "MIT",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
+    "@nomiclabs/hardhat-etherscan": "^2.1.4",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "@openzeppelin/contracts": "^4.2.0",
     "chai": "^4.3.4",
+    "dotenv": "^10.0.0",
     "ethereum-waffle": "^3.4.0",
     "ethers": "^5.4.0",
-    "hardhat": "^2.4.1"
+    "hardhat": "^2.4.1",
+    "hardhat-deploy": "^0.8.11",
+    "hardhat-gas-reporter": "^1.0.4"
   }
 }

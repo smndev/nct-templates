@@ -18,7 +18,7 @@ describe('UC1: NFT with embedded NCT functionality', () => {
     describe('deployement', () => {
         it('setup', async () => {
             NCT = await ethers.getContractFactory("NCT");
-            nct = await NCT.deploy("100000");
+            nct = await NCT.deploy(ethers.utils.parseUnits("10000.0", "18"));
 
             NFT = await ethers.getContractFactory("UC1");
             nft = await NFT.deploy(nct.address);
@@ -34,7 +34,7 @@ describe('UC1: NFT with embedded NCT functionality', () => {
         });
 
         it('transfer some NCT to others wallet', async () => {
-            numTokens = Math.floor((await nct.totalSupply()) / 3);
+            numTokens = ethers.utils.parseUnits("2500.0", "18");
 
             await nct.connect(owner).transfer(addr1.address, numTokens);
             await nct.connect(owner).transfer(addr2.address, numTokens);
@@ -99,7 +99,7 @@ describe('UC1: NFT with embedded NCT functionality', () => {
             // console.log("OWN address: " + owner.address)
             // console.log("NCT balance: " + await nct.connect(owner).balanceOf(owner.address))
 
-            await nct.connect(owner).approve(nft.address, 10);
+            await nct.connect(owner).increaseAllowance(nft.address, ethers.utils.parseUnits("10", "18"));
             await nft.connect(owner).changeName("1", "hello world");
 
         });
@@ -114,7 +114,7 @@ describe('UC1: NFT with embedded NCT functionality', () => {
 
         it('no duplicated names', async () => {
 
-            await nct.connect(addr1).approve(nft.address, 10);
+            await nct.connect(addr1).increaseAllowance(nft.address, ethers.utils.parseUnits("10", "18"));
 
             await expect(
                 nft.connect(addr1).changeName("2", "hello world")
