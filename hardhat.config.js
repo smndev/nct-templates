@@ -10,7 +10,7 @@ module.exports = {
     solidity: {
         compilers: [{
             version: '0.8.0', settings: {
-                optimizer: {enabled: !env.DEBUG},
+                optimizer: {enabled: true},
             },
         },]
     },

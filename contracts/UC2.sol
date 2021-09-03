@@ -34,7 +34,7 @@ contract UC2 is Ownable {
     INCT    private _nct;
 
     // Events
-    event NameChange (uint256 indexed maskIndex, string newName);
+    event NameChange (uint256 indexed tokenIdx, string newName);
 
 
     /**

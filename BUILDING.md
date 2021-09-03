@@ -13,7 +13,6 @@ and then edit the keys defines is this file as described in the following table.
 
 | Key                     | Description |
 | ----------------------- | ----------- |
-| ``DEBUG``               | If set to ``true`` the code will not be optimized |
 | ``ALCHEMY_API_KEY``     | Tke [Alchemy](https://docs.alchemy.com/alchemy/introduction/getting-started) API key        |
 | ``RINKEBY_PRIVATE_KEY`` | The Rinkeby private key used for deployng the contract  |
 | ``MAINNET_PRIVATE_KEY`` | The main net private key used for deployng the contract |

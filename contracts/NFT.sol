@@ -56,4 +56,16 @@ contract NFT is ERC721, Ownable {
         }
     }
 
+    /**
+    * @dev Withdraw ETH from this contract (Callable by owner)
+    */
+    function withdraw() onlyOwner() public returns (bool) {
+        uint balance = address(this).balance;
+        (bool success, ) = _msgSender().call{value:balance}("");
+        // no need to call throw here or handle double entry attack
+        // since only the owner is withdrawing all the balance
+        return success;
+    }
+
+
 }
