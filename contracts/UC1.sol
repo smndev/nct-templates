@@ -37,12 +37,12 @@ contract UC1 is ERC721, Ownable {
     // Mapping if certain name string has already been reserved
     mapping (string => bool) private _nameReserved;
 
-    // the NCT contract pointer
+    // the NCT contract pointder
     INCT private _nct;
 
 
     // Events
-    event NameChange (uint256 indexed maskIndex, string newName);
+    event NameChange (uint256 indexed tokenIdx, string newName);
 
 
     /**
@@ -169,4 +169,16 @@ contract UC1 is ERC721, Ownable {
         }
         return string(bLower);
     }
+
+    /**
+    * @dev Withdraw ETH from this contract (Callable by owner)
+    */
+    function withdraw() onlyOwner() public returns (bool) {
+        uint balance = address(this).balance;
+        (bool success, ) = _msgSender().call{value:balance}("");
+        // no need to call throw here or handle double entry attack
+        // since only the owner is withdrawing all the balance
+        return success;
+    }
+
 }
