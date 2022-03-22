@@ -1,11 +1,12 @@
 // contracts/UC1.sol
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.4;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/Base64.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "./INCT.sol";
 
 /**
@@ -13,23 +14,21 @@ import "./INCT.sol";
  * @dev This is the simplest and most elegant use case: an NFT that contains name management within its main contract.
  * Similar to The Hashmasks, NCTs are burned when a name is changed.
  *
- * Authors: s.imo
+ * Authors: 0xSimo
  * Created: 01.07.2021
  * Last revision: 26.07.2021: set name change price already ready for a real example
+ *                22.03.2022: on-chain metadata, gas optimizations, ERC721Enumerable
  */
-contract UC1 is ERC721, Ownable {
-    using Counters for Counters.Counter;
+contract UC1 is ERC721Enumerable, Ownable {
+    using Strings for uint256;
     using SafeMath for uint256;
 
     // The maximum number of tokens, this is just an example
-    uint256 public constant MAX_NFT_SUPPLY    = 16384;
+    uint256 public constant MAX_NFT_SUPPLY    = 233;
     // The name change price, you can set your own
     uint256 public constant NAME_CHANGE_PRICE = 10 * (10 ** 18);
     // The NFT minting price, this is just an example
-    uint256 public constant NFT_MINT_PRICE    = 100000000000000000; // 0.1 ETH
-
-    // counter of minted tokens
-    Counters.Counter private _tokenIds;
+    uint256 public constant NFT_MINT_PRICE    = 0.1 ether;
 
     // Mapping from token ID to name
     mapping (uint256 => string) private _tokenName;
@@ -37,11 +36,14 @@ contract UC1 is ERC721, Ownable {
     // Mapping if certain name string has already been reserved
     mapping (string => bool) private _nameReserved;
 
-    // the NCT contract pointder
+    // base URI for the images
+    string private _imagesRootURI;
+
+    // The NCT contract pointer
     INCT private _nct;
 
 
-    // Events
+    // NameChange event
     event NameChange (uint256 indexed tokenIdx, string newName);
 
 
@@ -53,10 +55,6 @@ contract UC1 is ERC721, Ownable {
     constructor(address nctAddress) ERC721("Your NFT with names", "XYZ") {
         //NOTE: here you can check if the required functions are implemented by IERC165
         _nct = INCT(nctAddress);
-    }
-
-    function totalSupply() public view returns (uint256) {
-        return _tokenIds.current();
     }
 
     /**
@@ -108,11 +106,40 @@ contract UC1 is ERC721, Ownable {
         require(NFT_MINT_PRICE.mul(numberOfNfts) == msg.value, "Ether value sent is not correct");
 
         for (uint i = 0; i < numberOfNfts; i++) {
-            _tokenIds.increment(); // the first token will have id set to 1
-
-            uint256 newTokenId = _tokenIds.current();
-            _mint(msg.sender, newTokenId);
+            uint256 mintIndex = totalSupply();
+            if (mintIndex < MAX_NFT_SUPPLY) {
+                _safeMint(_msgSender(), mintIndex);
+            }
         }
+    }
+
+    function setImagesBaseURI(string memory uri) external onlyOwner() {
+        _imagesRootURI = uri;
+    }
+
+    function _baseURI() internal view virtual override returns (string memory) {
+        return _imagesRootURI;
+    }
+
+
+    function tokenURI(uint256 tokenId) override public view returns (string memory) {
+        require(_exists(tokenId),                 "TokenId not valid");
+        require(bytes(_imagesRootURI).length > 0, "Image base URI not yet set");
+
+        bytes memory dataURI = abi.encodePacked(
+            '{',
+                '"name": "', tokenNameByIndex(tokenId),'",',
+                '"description": "your project description",',
+                '"image": "', string(abi.encodePacked(_baseURI(), tokenId.toString())),
+             '"}'
+        );
+
+        return string(
+            abi.encodePacked(
+                "data:application/json;base64,",
+                Base64.encode(dataURI)
+            )
+        );
     }
 
 

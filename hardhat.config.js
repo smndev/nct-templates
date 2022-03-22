@@ -9,7 +9,7 @@ const env = process.env;
 module.exports = {
     solidity: {
         compilers: [{
-            version: '0.8.0', settings: {
+            version: '0.8.4', settings: {
                 optimizer: {enabled: true},
             },
         },]

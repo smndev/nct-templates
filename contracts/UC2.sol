@@ -1,6 +1,6 @@
 // contracts/UC2.sol
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
@@ -13,7 +13,7 @@ import "./INCT.sol";
  * @dev In this implementation, the contract defining NFTs has already been implemented.
  * This contract then defines an external database that contains the names of the various tokens.
  *
- * Authors: s.imo
+ * Authors: 0xSimo
  * Created: 02.07.2021
  * Last revision: 26.07.2021: set name change price already ready for a real example
  */

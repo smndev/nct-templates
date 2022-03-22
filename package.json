@@ -1,8 +1,7 @@
 {
   "name": "nctproject",
-  "version": "1.2.1",
+  "version": "2.0.1",
   "description": "How to integrate Name Changing Token (NCT) to a new or existing NFT project",
-  "main": "index.js",
   "scripts": {
     "test": "npx hardhat test",
     "compile": "npx hardhat compile",
@@ -13,13 +12,13 @@
     "NCT",
     "HashMasks"
   ],
-  "author": "maskDAO",
+  "author": "0xSimo",
   "license": "MIT",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-etherscan": "^2.1.4",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
-    "@openzeppelin/contracts": "^4.2.0",
+    "@openzeppelin/contracts": "^4.5.0",
     "chai": "^4.3.4",
     "dotenv": "^10.0.0",
     "ethereum-waffle": "^3.4.0",

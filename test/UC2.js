@@ -58,36 +58,32 @@ describe('UC2: NFT with an external contract for naming', () => {
             await nft.connect(addr1).mintNFT(1, { value: ethers.utils.parseEther("0.1") });
             await nft.connect(addr2).mintNFT(1, { value: ethers.utils.parseEther("0.1") });
 
-            await expect(
-                nft.ownerOf(0)
-            ).to.be.revertedWith("ERC721: owner query for nonexistent token");
-
-            expect(await nft.ownerOf(1)).to.equal(owner.address);
-            expect(await nft.ownerOf(2)).to.equal(addr1.address);
-            expect(await nft.ownerOf(3)).to.equal(addr2.address);
+            expect(await nft.ownerOf(0)).to.equal(owner.address);
+            expect(await nft.ownerOf(1)).to.equal(addr1.address);
+            expect(await nft.ownerOf(2)).to.equal(addr2.address);
 
         });
 
         it('mint 10 token for addr1', async () => {
             await nft.connect(addr1).mintNFT(10, { value: ethers.utils.parseEther("1") });
 
-            k = await nft.totalSupply();
-            for (i = 0; i < 10; i++) {
+            let k = await nft.totalSupply();
+            for (let i = 1; i <= 10; i++) {
                 expect(await nft.ownerOf(k - i)).to.equal(addr1.address);
             }
         });
 
         it('mint all remaining tokens', async () => {
-            minters = [addr1, addr2, addr3];
-            maxNfts = await nft.MAX_NFT_SUPPLY();
+            let minters = [addr1, addr2, addr3];
+            let maxNfts = await nft.MAX_NFT_SUPPLY();
 
             for(j = 0;; j++){
-                numNfts = await nft.totalSupply();
+                let numNfts = await nft.totalSupply();
 
-                k = Math.min(20, maxNfts - numNfts);
+                let k = Math.min(20, maxNfts - numNfts);
                 if(k <= 0) break;
 
-                price = k * 0.1;
+                let price = k * 0.1;
                 await nft.connect(minters[j % 3]).mintNFT(k, {value: ethers.utils.parseEther(price.toString())});
             }
 
@@ -103,14 +99,14 @@ describe('UC2: NFT with an external contract for naming', () => {
             // console.log("NCT balance: " + await nct.connect(owner).balanceOf(owner.address))
 
             await nct.connect(owner).increaseAllowance(db.address, ethers.utils.parseUnits("10.0", "18"));
-            await db.connect(owner).changeName("1", "hello world");
+            await db.connect(owner).changeName("0", "hello world");
 
         });
 
         it('only the owner can change name of a NFT token', async () => {
 
             await expect(
-                db.connect(addr1).changeName("1", "hello world")
+                db.connect(addr1).changeName("0", "hello world")
             ).to.be.revertedWith("Caller is not the owner");
 
         });
@@ -120,7 +116,7 @@ describe('UC2: NFT with an external contract for naming', () => {
             await nct.connect(addr1).increaseAllowance(nft.address, ethers.utils.parseUnits("10", "18"));
 
             await expect(
-                db.connect(addr1).changeName("2", "hello world")
+                db.connect(addr1).changeName("1", "hello world")
             ).to.be.revertedWith("Name already reserved");
 
         });

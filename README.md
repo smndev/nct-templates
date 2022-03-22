@@ -16,6 +16,12 @@ The repository is structured as follows:
 
 Building, testing and deployed instructions are available in [BUILDING.md](./BUILDING.md).
 
+-----
+Licence: MIT, see [LICENSE.md](./LICENSE.md)
+
+Contacts: [simo@whaleanalytica.com](mailto:simo@whaleanalytica.com)
+
+-----
 
 ## <a name="s1"></a> 1. What is NCT
 The Name Change Token (NCT) is the native token of Hashmasks. The NCT has only one purpose: it allows its holder to 
@@ -65,9 +71,11 @@ the needs of the project. Please remember that the number of decimal places in t
 
 It is important to note that for the operation to be successful, the owner of the token must:
 - have enough NCTs in his wallet.
-- call the ``increaseAllowance()`` function on the NCT contract before calling ``changeName()`` function 
-  (e.g., see [UC1.js, line 102](./test/UC1.js#L102)), where as parameters shall be given the address 
-  of the ``UC1`` contract and the number of NCT tokens to be approved.
+- call the ``increaseAllowance()`` function on the NCT contract before calling ``changeName()`` function, where as 
+  parameters shall be given the address of the ``UC1`` contract and the number of NCT tokens to be approved.
+
+In this example the json metadata of each token is stored on-chain: see ``tokenURI()`` in [UC1.sol, line 125](./test/UC1.sol#L125).
+This implies that the name will be displayed automatically in exchanges like for example OpenSea.
 
 ## <a name="s3"></a> 3. Integrating into an existing NFT project
 This section describes how to develop a parallel contract for an  Ethereum Mainnet deployed NFT contract that can be 
@@ -92,8 +100,8 @@ Please remember that the number of decimal places in the NCT contract is 18.
 
 It is important to note that for the operation to be successful, the owner of the token must:
 - have enough NCTs in his wallet.
-- call the ``increaseAllowance()`` function on the NCT contract before calling ``changeName()`` function 
-  (e.g., see [UC2.js, line 105](./test/UC2.js#L105)), where as parameters shall be given the address
+- call the ``increaseAllowance()`` function on the NCT contract before calling ``changeName()`` function, 
+  where as parameters shall be given the address
   of the ``UC2`` contract and the number of NCT tokens to be approved.
 
 

@@ -1,6 +1,6 @@
 // contracts/NCT.sol
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -11,7 +11,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  * The purpose of this contract is to very simply simulate real NCTs for testing purposes only.
  * The basic functions available in NCT are the same.
  *
- * Authors: s.imo
+ * Authors: 0xSimo
  * Created: 01.07.2021
  * Last revision: 26.07.2021: add the debugging-only increaseTotalSupply() function
  */
