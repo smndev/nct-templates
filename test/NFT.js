@@ -75,7 +75,7 @@ describe('NFT contract', () => {
         it('not owner transfer 1 token', async () => {
             await expect(
                 nft.connect(addr2).transferFrom(owner.address, addr1.address, 0)
-            ).to.be.revertedWith("ERC721: transfer caller is not owner nor approved");
+            ).to.be.revertedWith("ERC721: caller is not token owner nor approved");
         });
 
         it('not owner transfer 1 token with approval', async () => {

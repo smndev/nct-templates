@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "./INCT.sol";
 
 /**
@@ -17,9 +17,9 @@ import "./INCT.sol";
  * Authors: 0xSimo
  * Created: 01.07.2021
  * Last revision: 26.07.2021: set name change price already ready for a real example
- *                22.03.2022: on-chain metadata, gas optimizations, ERC721Enumerable
+ *                22.07.2022: gas optimizations
  */
-contract UC1 is ERC721Enumerable, Ownable {
+contract UC1 is ERC721, Ownable {
     using Strings for uint256;
     using SafeMath for uint256;
 
@@ -29,6 +29,8 @@ contract UC1 is ERC721Enumerable, Ownable {
     uint256 public constant NAME_CHANGE_PRICE = 10 * (10 ** 18);
     // The NFT minting price, this is just an example
     uint256 public constant NFT_MINT_PRICE    = 0.1 ether;
+    // the (current) total supply
+    uint256 public totalSupply;
 
     // Mapping from token ID to name
     mapping (uint256 => string) private _tokenName;
@@ -99,16 +101,16 @@ contract UC1 is ERC721Enumerable, Ownable {
      * @dev Mint 'numberOfNfts' new tokens
      */
     function mintNFT(uint256 numberOfNfts) public payable {
-        require(totalSupply() <  MAX_NFT_SUPPLY, "Sale has already ended");
+        require(totalSupply <  MAX_NFT_SUPPLY, "Sale has already ended");
         require(numberOfNfts  >  0, "numberOfNfts cannot be 0");
         require(numberOfNfts  <= 20, "You may not buy more than 20 NFTs at once");
-        require(totalSupply().add(numberOfNfts)  <= MAX_NFT_SUPPLY, "Sale has already ended");
+        require(totalSupply.add(numberOfNfts)  <= MAX_NFT_SUPPLY, "Sale has already ended");
         require(NFT_MINT_PRICE.mul(numberOfNfts) == msg.value, "Ether value sent is not correct");
 
         for (uint i = 0; i < numberOfNfts; i++) {
-            uint256 mintIndex = totalSupply();
-            if (mintIndex < MAX_NFT_SUPPLY) {
-                _safeMint(_msgSender(), mintIndex);
+            if (totalSupply < MAX_NFT_SUPPLY) {
+                _mint(_msgSender(), totalSupply);
+                totalSupply += 1; // can be unchecked no overflow here
             }
         }
     }
