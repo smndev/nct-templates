@@ -27,7 +27,7 @@ Contacts: [simo@whaleanalytica.com](mailto:simo@whaleanalytica.com)
 The Name Change Token (NCT) is the native token of Hashmasks. The NCT has only one purpose: it allows its holder to 
 give its Hashmask a unique name that is permanently stored and publicly visible on the Ethereum Blockchain. 
 NCTs is the first ERC20 tokens to appear in the world of NFTs (birthday January 2021) and is used through a burn 
-system to change the name of a Hashmask.
+system to change the name of a Hashmasks.
 As stated on The Hashmasks website, *"this opens up a whole new dimension for collecting where the hierarchy of the 
 value of individual pieces of the entire collective art is highly influenced by consumer preferences."*
 
@@ -47,7 +47,7 @@ In summary:
 The rules for assigning a name to an NFT token are also followed in the implementation examples:
 - No name can be identical
 - There is a limit of 25 symbols (including spaces)
-- Uniqueness is case insensitive (i.e. «John» and «john» are considered the same for the blockchain)
+- Uniqueness is case insensitive (i.e. «John» and «john» are considered the same)
 - There are no leading or trailing «spaces»
 - Only alphanumeric symbols are eligible for use
 - Used names become available immediately after the name of the NFT token was changed
@@ -66,16 +66,41 @@ of an NFT token and imposes the following conditions:
 - No two NFT tokens can have the same name.
 - Only the owner of the NFT token can change the name.
 
-To change the name in this example  the ``NAME_CHANGE_PRICE NCT`` must be burned. This policy can be changed to suit 
-the needs of the project. Please remember that the number of decimal places in the NCT contract is 18.
+In this example, the ``NAME_CHANGE_PRICE`` sets the NCT quantity  that must be burned to change the name. 
+This policy can be changed to suit the needs of the project. 
+Please remember that the number of decimal places in the NCT contract is 18.
 
 It is important to note that for the operation to be successful, the owner of the token must:
 - have enough NCTs in his wallet.
 - call the ``increaseAllowance()`` function on the NCT contract before calling ``changeName()`` function, where as 
   parameters shall be given the address of the ``UC1`` contract and the number of NCT tokens to be approved.
 
-In this example the json metadata of each token is stored on-chain: see ``tokenURI()`` in [UC1.sol, line 125](./test/UC1.sol#L125).
-This implies that the name will be displayed automatically in exchanges like for example OpenSea.
+In this example the json metadata of each token is dynamically created on-chain: 
+see the function ``tokenURI()`` in [UC1.sol](./contracts/UC1.sol#L127) also reported herein below.
+This implies that the name will be displayed automatically in NFTs exchanges like for example OpenSea. 
+Please note that here, in order to simplify the example, the traits of each token are not handled.
+
+ ```solidity
+function tokenURI(uint256 tokenId) override public view returns (string memory) {
+    require(_exists(tokenId),                 "TokenId not valid");
+    require(bytes(_imagesRootURI).length > 0, "Image base URI not yet set");
+
+    bytes memory dataURI = abi.encodePacked(
+        '{',
+            '"name": "', tokenNameByIndex(tokenId),'",',
+            '"description": "your project description",',
+            '"image": "', string(abi.encodePacked(_baseURI(), tokenId.toString())),
+         '"}'
+    );
+
+    return string(
+        abi.encodePacked(
+            "data:application/json;base64,",
+            Base64.encode(dataURI)
+        )
+    );
+}
+ ```
 
 ## <a name="s3"></a> 3. Integrating into an existing NFT project
 This section describes how to develop a parallel contract for an  Ethereum Mainnet deployed NFT contract that can be 
@@ -93,8 +118,8 @@ NFT token names’ name to a token while imposing the following conditions:
 - No two tokens can have the same name
 - Only the owner of the token can change the name: guaranteed by making the “ownerOf” query to the NFT contract
 
-In this example, the ``NAME_CHANGE_PRICE NCT`` sets the NCT quantity  that must be burned to change the name. 
-This price can be changed to suit the project’s needs. 
+In this example, the ``NAME_CHANGE_PRICE`` sets the NCT quantity  that must be burned to change the name.
+This policy can be changed to suit the needs of the project. 
 Please remember that the number of decimal places in the NCT contract is 18.
 
 
